@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.mccidanceclub.controller.AdminController"
+            prefWidth="600" prefHeight="400" style="-fx-background-color: #f0f0f0;">
+
+    <!-- Table des admins -->
+    <TableView fx:id="tableAdmins" layoutX="20" layoutY="20" prefWidth="560" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colUsername" text="Nom d'utilisateur" prefWidth="250"/>
+            <TableColumn fx:id="colPassword" text="Mot de passe" prefWidth="250"/>
+        </columns>
+    </TableView>
+
+    <!-- Formulaire -->
+    <Label text="Nom d'utilisateur :" layoutX="20" layoutY="240"/>
+    <TextField fx:id="txtUsername" layoutX="150" layoutY="236" prefWidth="200"/>
+
+    <Label text="Mot de passe :" layoutX="20" layoutY="280"/>
+    <PasswordField fx:id="txtPassword" layoutX="150" layoutY="276" prefWidth="200"/>
+
+    <!-- Boutons CRUD -->
+    <HBox layoutX="380" layoutY="236" spacing="10">
+        <Button fx:id="btnAdd" text="Ajouter" onAction="#addAdmin" prefWidth="80"/>
+        <Button fx:id="btnUpdate" text="Modifier" onAction="#updateAdmin" prefWidth="80"/>
+        <Button fx:id="btnDelete" text="Supprimer" onAction="#deleteAdmin" prefWidth="80"/>
+    </HBox>
+
+</AnchorPane>

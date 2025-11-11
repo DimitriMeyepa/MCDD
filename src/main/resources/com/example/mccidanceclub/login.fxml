@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.mccidanceclub.controller.AdminController"
+      spacing="15" alignment="CENTER" style="-fx-background-color: linear-gradient(to bottom, #4e54c8, #8f94fb);"
+      prefWidth="400" prefHeight="300">
+
+    <Label text="Connexion Admin" textFill="WHITE">
+        <font>
+            <Font size="24"/>
+        </font>
+    </Label>
+
+    <GridPane hgap="10" vgap="10">
+        <padding>
+            <Insets top="10" bottom="10" left="20" right="20"/>
+        </padding>
+
+        <Label text="Nom d'utilisateur :" textFill="WHITE" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <TextField fx:id="txtUsername" promptText="Entrez votre nom d'utilisateur" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+        <Label text="Mot de passe :" textFill="WHITE" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <PasswordField fx:id="txtPassword" promptText="Entrez votre mot de passe" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <Button fx:id="btnLogin" text="Se connecter" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" maxWidth="150"/>
+
+</VBox>

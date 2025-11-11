@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.mccidanceclub.controller.ContributionController"
+            prefWidth="600" prefHeight="500">
+
+    <!-- Titre -->
+    <Label text="Gestion des Cotisations" layoutX="20" layoutY="10" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- Sélection du membre -->
+    <Label text="Membre :" layoutX="20" layoutY="50"/>
+    <ComboBox fx:id="cmbMembers" layoutX="120" layoutY="45" prefWidth="200"/>
+
+    <!-- Montant -->
+    <Label text="Montant :" layoutX="20" layoutY="90"/>
+    <TextField fx:id="txtAmount" layoutX="120" layoutY="85" prefWidth="200"/>
+
+    <!-- Boutons -->
+    <Button fx:id="btnAdd" text="Ajouter" layoutX="350" layoutY="85" onAction="#addContribution"/>
+    <Button fx:id="btnUpdate" text="Modifier" layoutX="430" layoutY="85" onAction="#updateContribution"/>
+    <Button fx:id="btnDelete" text="Supprimer" layoutX="520" layoutY="85" onAction="#deleteContribution"/>
+
+    <!-- TableView des contributions -->
+    <TableView fx:id="tableContributions" layoutX="20" layoutY="130" prefWidth="560" prefHeight="250">
+        <columns>
+            <TableColumn fx:id="colMemberName" text="Membre" prefWidth="200"/>
+            <TableColumn fx:id="colAmount" text="Montant donné" prefWidth="150"/>
+            <TableColumn fx:id="colBalance" text="Solde total" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <!-- Section Solde Total -->
+    <VBox layoutX="20" layoutY="390" prefWidth="560" spacing="10" style="-fx-border-color: #2E8B57; -fx-border-width: 2px; -fx-background-color: #F0FFF0; -fx-padding: 10;">
+        <Label text="SOLDE TOTAL GÉNÉRAL" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #2E8B57;"/>
+        <HBox spacing="20" alignment="CENTER_LEFT">
+            <Label text="Total des cotisations :" style="-fx-font-size: 12px;"/>
+            <Label fx:id="lblTotalAmount" text="0.00 €" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2E8B57;"/>
+        </HBox>
+    </VBox>
+
+</AnchorPane>

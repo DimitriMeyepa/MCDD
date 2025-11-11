@@ -2,11 +2,18 @@ package com.example.mccidanceclub.controller;
 
 import com.example.mccidanceclub.dao.AdminDAO;
 import com.example.mccidanceclub.entities.Admin;
+import javafx.animation.PauseTransition;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class AdminController {
 
@@ -14,6 +21,7 @@ public class AdminController {
     @FXML private TextField txtUsername;
     @FXML private PasswordField txtPassword;
     @FXML private Label lblMessage;
+    @FXML private Button btnLogin;
 
     private AdminDAO adminDAO;
 
@@ -34,6 +42,12 @@ public class AdminController {
     public void initialize() {
         adminDAO = new AdminDAO();
 
+        // Configurer les effets pour le login
+        if (btnLogin != null) {
+            setupLoginEffects();
+            setupTooltips();
+        }
+
         // Si CRUD visible, on configure la table
         if (tableAdmins != null) {
             setupTable();
@@ -41,6 +55,53 @@ public class AdminController {
             setupSelectionListener();
             updateButtonStates();
         }
+    }
+
+    // --- Configuration des effets pour le login ---
+    private void setupLoginEffects() {
+        // Effet de survol pour le bouton de connexion
+        btnLogin.setOnMouseEntered(e -> {
+            btnLogin.setStyle("-fx-background-color: linear-gradient(to right, #5a6fdb, #6a4790); -fx-background-radius: 15; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand;");
+            btnLogin.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.rgb(90, 111, 219, 0.6), 15, 0, 0, 5));
+        });
+
+        btnLogin.setOnMouseExited(e -> {
+            btnLogin.setStyle("-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 15; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand;");
+            btnLogin.setEffect(new DropShadow(BlurType.GAUSSIAN, Color.rgb(102, 126, 234, 0.4), 10, 0, 0, 0));
+        });
+
+        // Effet de clic pour le bouton
+        btnLogin.setOnMousePressed(e -> {
+            btnLogin.setStyle("-fx-background-color: linear-gradient(to right, #4a5fcf, #5a3a7a); -fx-background-radius: 15; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand;");
+        });
+
+        btnLogin.setOnMouseReleased(e -> {
+            btnLogin.setStyle("-fx-background-color: linear-gradient(to right, #667eea, #764ba2); -fx-background-radius: 15; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16; -fx-cursor: hand;");
+        });
+
+        // Effets pour les champs de texte
+        setupFieldEffects(txtUsername);
+        setupFieldEffects(txtPassword);
+    }
+
+    private void setupFieldEffects(TextField field) {
+        field.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                field.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 10; -fx-border-color: #667eea; -fx-border-radius: 10; -fx-border-width: 2; -fx-padding: 12; -fx-font-size: 14;");
+            } else {
+                field.setStyle("-fx-background-color: #f7fafc; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10; -fx-padding: 12; -fx-font-size: 14;");
+            }
+        });
+    }
+
+    private void setupTooltips() {
+        Tooltip usernameTooltip = new Tooltip("Entrez votre nom d'utilisateur administrateur");
+        usernameTooltip.setStyle("-fx-background-color: #2d3748; -fx-text-fill: white; -fx-font-size: 12;");
+        txtUsername.setTooltip(usernameTooltip);
+
+        Tooltip passwordTooltip = new Tooltip("Entrez votre mot de passe administrateur");
+        passwordTooltip.setStyle("-fx-background-color: #2d3748; -fx-text-fill: white; -fx-font-size: 12;");
+        txtPassword.setTooltip(passwordTooltip);
     }
 
     // --- LOGIN ---
@@ -51,22 +112,74 @@ public class AdminController {
 
         if (username.isEmpty() || password.isEmpty()) {
             showMessage("Veuillez remplir tous les champs", "error");
+            shakeAnimation(txtUsername);
+            shakeAnimation(txtPassword);
             return;
         }
 
-        if (login(username, password)) {
-            showMessage("✅ Connexion réussie !", "success");
-            // Ici, vous pouvez changer de scène vers AdminApplication
-            // ex: App.showAdminDashboard();
-        } else {
-            showMessage("❌ Nom d'utilisateur ou mot de passe incorrect !", "error");
+        // Animation de chargement
+        btnLogin.setText("Connexion...");
+        btnLogin.setDisable(true);
+
+        // Simuler un délai de connexion (à retirer en production)
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+        pause.setOnFinished(e -> {
+            if (login(username, password)) {
+                showMessage("✅ Connexion réussie ! Redirection...", "success");
+                animateLogin(true);
+            } else {
+                showMessage("❌ Identifiants incorrects", "error");
+                btnLogin.setText("Se connecter");
+                btnLogin.setDisable(false);
+                shakeAnimation(btnLogin);
+            }
+        });
+        pause.play();
+    }
+
+    // Animation de connexion réussie
+    private void animateLogin(boolean success) {
+        if (success) {
+            // Animation de succès
+            btnLogin.setText("✓ Connexion réussie");
+            btnLogin.setStyle("-fx-background-color: #48bb78; -fx-background-radius: 15; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16;");
+
+            // Transition vers la prochaine vue après un délai
+            PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+            pause.setOnFinished(e -> {
+                // Charger la vue admin principale
+                // App.showAdminDashboard();
+                System.out.println("Redirection vers le dashboard admin...");
+            });
+            pause.play();
         }
+    }
+
+    // Animation de secousse pour les erreurs
+    private void shakeAnimation(Node node) {
+        TranslateTransition tt = new TranslateTransition(Duration.millis(50), node);
+        tt.setFromX(0);
+        tt.setByX(10);
+        tt.setCycleCount(4);
+        tt.setAutoReverse(true);
+        tt.play();
     }
 
     // Méthode publique pour le LoginApplication
     public boolean login(String username, String password) {
         Admin admin = adminDAO.login(username, password);
         return admin != null;
+    }
+
+    // Gestion des effets pour le lien mot de passe oublié
+    @FXML
+    private void handleForgotPasswordHover() {
+        // Cet effet sera géré par le CSS inline dans le FXML
+    }
+
+    @FXML
+    private void handleForgotPasswordExit() {
+        // Cet effet sera géré par le CSS inline dans le FXML
     }
 
     // --- CRUD ---
@@ -87,6 +200,9 @@ public class AdminController {
                 }
             }
         });
+
+        // Style moderne pour la table
+        tableAdmins.setStyle("-fx-font-size: 14px; -fx-border-color: #e2e8f0; -fx-border-radius: 10;");
     }
 
     private void loadAdmins() {
@@ -203,6 +319,10 @@ public class AdminController {
         alert.setHeaderText("Supprimer l'administrateur");
         alert.setContentText("Êtes-vous sûr de vouloir supprimer l'admin : " + selected.getUsername() + " ?");
 
+        // Style moderne pour l'alerte
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-font-size: 14px; -fx-border-color: #e2e8f0;");
+
         if (alert.showAndWait().get() == ButtonType.OK) {
             if (adminDAO.deleteAdmin(selected.getIdAdmin())) {
                 showMessage("Admin supprimé avec succès !", "success");
@@ -252,9 +372,9 @@ public class AdminController {
         if (lblMessage != null) {
             lblMessage.setText(message);
             if ("success".equals(type)) {
-                lblMessage.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                lblMessage.setStyle("-fx-text-fill: #48bb78; -fx-font-weight: bold; -fx-font-size: 14;");
             } else {
-                lblMessage.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                lblMessage.setStyle("-fx-text-fill: #e53e3e; -fx-font-weight: bold; -fx-font-size: 14;");
             }
         }
     }
@@ -264,10 +384,15 @@ public class AdminController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        // Style moderne pour les alertes
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-font-size: 14px; -fx-border-color: #e2e8f0; -fx-background-color: white;");
+
         alert.showAndWait();
     }
 
-    // Méthode pour initialiser un admin par défaut (à apputer une fois)
+    // Méthode pour initialiser un admin par défaut (à appeler une fois)
     public void initializeDefaultAdmin() {
         if (adminDAO.getAllAdmins().isEmpty()) {
             Admin defaultAdmin = new Admin("admin", "admin123");

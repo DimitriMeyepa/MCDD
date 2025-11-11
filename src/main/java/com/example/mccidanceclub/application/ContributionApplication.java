@@ -5,19 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LoginApplication extends Application {
+public class ContributionApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/mccidanceclub/login.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/mccidanceclub/contribution.fxml"));
         Scene scene = new Scene(loader.load());
-
-        stage.setTitle("Connexion Admin - MCCI Dance Club");
+        stage.setTitle("Gestion des Contributions");
         stage.setScene(scene);
-
-        // Ouvrir en plein écran
-        stage.setMaximized(true);
-
         stage.show();
     }
 

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.mccidanceclub.controller.EventsController"
+            prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #f0f0f0;">
+
+    <!-- Table des événements -->
+    <TableView fx:id="tableEvents" layoutX="20" layoutY="20" prefWidth="560" prefHeight="200">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colName" text="Nom de l'événement" prefWidth="300"/>
+            <TableColumn fx:id="colDate" text="Date" prefWidth="200"/>
+        </columns>
+    </TableView>
+
+    <!-- Formulaire pour ajouter/modifier -->
+    <Label text="Nom de l'événement :" layoutX="20" layoutY="240"/>
+    <TextField fx:id="txtName" layoutX="150" layoutY="235" prefWidth="200"/>
+
+    <Label text="Date de l'événement :" layoutX="20" layoutY="280"/>
+    <DatePicker fx:id="dpDate" layoutX="150" layoutY="275"/>
+
+    <!-- Boutons -->
+    <HBox layoutX="20" layoutY="320" spacing="10">
+        <Button fx:id="btnAdd" text="Ajouter" onAction="#addEvent" prefWidth="100"/>
+        <Button fx:id="btnUpdate" text="Modifier" onAction="#updateEvent" prefWidth="100"/>
+        <Button fx:id="btnDelete" text="Supprimer" onAction="#deleteEvent" prefWidth="100"/>
+    </HBox>
+
+</AnchorPane>

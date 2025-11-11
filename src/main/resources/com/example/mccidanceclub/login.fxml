@@ -3,31 +3,108 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.mccidanceclub.controller.AdminController"
-      spacing="15" alignment="CENTER" style="-fx-background-color: linear-gradient(to bottom, #4e54c8, #8f94fb);"
-      prefWidth="400" prefHeight="300">
+      alignment="CENTER"
+      style="-fx-background-color: linear-gradient(to bottom right, #ec4899 0%, #db2777 100%);">
 
-    <Label text="Connexion Admin" textFill="WHITE">
-        <font>
-            <Font size="24"/>
-        </font>
-    </Label>
-
-    <GridPane hgap="10" vgap="10">
+    <!-- Carte de connexion carrée -->
+    <StackPane style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(219, 39, 119, 0.3), 25, 0, 0, 8);"
+               maxWidth="400" maxHeight="400">
         <padding>
-            <Insets top="10" bottom="10" left="20" right="20"/>
+            <Insets top="40" bottom="40" left="40" right="40"/>
         </padding>
 
-        <Label text="Nom d'utilisateur :" textFill="WHITE" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="txtUsername" promptText="Entrez votre nom d'utilisateur" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <VBox spacing="25" alignment="CENTER">
+            <!-- En-tête -->
+            <VBox spacing="12" alignment="CENTER">
+                <!-- Icône utilisateur -->
+                <StackPane>
+                    <Rectangle width="70" height="70" arcWidth="15" arcHeight="15"
+                               fill="linear-gradient(to bottom right, #ec4899, #db2777)"/>
+                    <Label text="👩‍💼" style="-fx-font-size: 28; -fx-text-fill: white; -fx-padding: 0;"/>
+                </StackPane>
 
-        <Label text="Mot de passe :" textFill="WHITE" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <PasswordField fx:id="txtPassword" promptText="Entrez votre mot de passe" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-    </GridPane>
+                <VBox spacing="5" alignment="CENTER">
+                    <Label text="Connexion Admin" textFill="#1f2937">
+                        <font>
+                            <Font name="System Bold" size="24"/>
+                        </font>
+                    </Label>
+                    <Label text="Espace réservé aux administrateurs" textFill="#6b7280" textAlignment="CENTER"
+                           wrapText="true" maxWidth="250">
+                        <font>
+                            <Font size="11"/>
+                        </font>
+                    </Label>
+                </VBox>
+            </VBox>
 
-    <Button fx:id="btnLogin" text="Se connecter" style="-fx-background-color: #6a5acd; -fx-text-fill: white; -fx-font-weight: bold;" maxWidth="150"/>
+            <!-- Formulaire -->
+            <VBox spacing="18" alignment="CENTER_LEFT" prefWidth="280">
+                <!-- Champ nom d'utilisateur -->
+                <VBox spacing="6">
+                    <Label text="Nom d'utilisateur" textFill="#374151" style="-fx-font-weight: bold; -fx-font-size: 13;"/>
+                    <TextField fx:id="txtUsername"
+                               promptText="Entrez votre nom d'utilisateur"
+                               style="-fx-background-color: #fdf2f8; -fx-background-radius: 8; -fx-border-color: #fbcfe8; -fx-border-radius: 8; -fx-border-width: 1.5; -fx-padding: 12; -fx-font-size: 14; -fx-text-fill: #1f2937;"
+                               prefHeight="42">
+                    </TextField>
+                </VBox>
 
+                <!-- Champ mot de passe -->
+                <VBox spacing="6">
+                    <Label text="Mot de passe" textFill="#374151" style="-fx-font-weight: bold; -fx-font-size: 13;"/>
+                    <PasswordField fx:id="txtPassword"
+                                   promptText="Entrez votre mot de passe"
+                                   style="-fx-background-color: #fdf2f8; -fx-background-radius: 8; -fx-border-color: #fbcfe8; -fx-border-radius: 8; -fx-border-width: 1.5; -fx-padding: 12; -fx-font-size: 14; -fx-text-fill: #1f2937;"
+                                   prefHeight="42">
+                    </PasswordField>
+                </VBox>
+
+                <!-- Lien mot de passe oublié -->
+                <HBox alignment="CENTER_RIGHT">
+                    <Button text="Mot de passe oublié ?"
+                            style="-fx-background-color: transparent; -fx-text-fill: #db2777; -fx-underline: true; -fx-cursor: hand; -fx-padding: 5; -fx-font-size: 12;"
+                            onMouseEntered="#handleForgotPasswordHover"
+                            onMouseExited="#handleForgotPasswordExit"/>
+                </HBox>
+            </VBox>
+
+            <!-- Bouton de connexion -->
+            <VBox spacing="12" alignment="CENTER" prefWidth="280">
+                <Button fx:id="btnLogin"
+                        text="Se connecter"
+                        onAction="#handleLogin"
+                        style="-fx-background-color: linear-gradient(to right, #ec4899, #db2777); -fx-background-radius: 10; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 15; -fx-cursor: hand; -fx-border-color: #fdf2f8; -fx-border-width: 2;"
+                        prefWidth="280" prefHeight="46">
+                    <padding>
+                        <Insets top="12" bottom="12" left="25" right="25"/>
+                    </padding>
+                </Button>
+
+                <!-- Message d'état -->
+                <Label fx:id="lblMessage" textFill="#e11d48" textAlignment="CENTER" wrapText="true" maxWidth="250">
+                    <font>
+                        <Font size="11" name="System Bold"/>
+                    </font>
+                </Label>
+            </VBox>
+
+            <!-- Pied de page -->
+            <VBox spacing="4" alignment="CENTER">
+                <Separator prefWidth="180" style="-fx-background-color: #f3f4f6;"/>
+                <Label text="MCC Dance Club © 2024" textFill="#9ca3af">
+                    <font>
+                        <Font size="10"/>
+                    </font>
+                </Label>
+            </VBox>
+        </VBox>
+    </StackPane>
 </VBox>

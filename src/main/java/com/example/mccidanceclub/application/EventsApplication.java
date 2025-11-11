@@ -5,19 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class LoginApplication extends Application {
+public class EventsApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/mccidanceclub/login.fxml"));
+        // Charger le FXML de la fenêtre Events
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/mccidanceclub/events.fxml"));
         Scene scene = new Scene(loader.load());
-
-        stage.setTitle("Connexion Admin - MCCI Dance Club");
+        stage.setTitle("Gestion des Événements - MCCI Dance Club");
         stage.setScene(scene);
-
-        // Ouvrir en plein écran
-        stage.setMaximized(true);
-
         stage.show();
     }
 
